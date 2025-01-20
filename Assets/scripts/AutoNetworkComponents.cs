@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using Mirror;
+using TMPro;
 
 public class AutoNetworkComponents : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class AutoNetworkComponents : MonoBehaviour
     [Header("Events")] 
     public UnityEvent onHostStart;
     public UnityEvent onClientStart;
+    
+    public TMP_Text text;
 
     void Start()
     {
@@ -24,6 +27,7 @@ public class AutoNetworkComponents : MonoBehaviour
         {
             // Set as Host for PC
             Debug.Log("Starting as Host (PC)");
+            text.text = "Starting as Host (PC)";
             NetworkManager.singleton.StartHost();
             onHostStart.Invoke();
         }
@@ -31,6 +35,7 @@ public class AutoNetworkComponents : MonoBehaviour
         {
             // Set as Client for Android
             Debug.Log("Starting as Client (Android)");
+            text.text = "Starting as Client (Android)";
             NetworkManager.singleton.StartClient();
             onClientStart.Invoke();
         }

@@ -1,55 +1,62 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
-using Unity.XR.CoreUtils; // Import the namespace for XROrigin
+using TMPro;
 
 public class CenterSceneOnPlaySpace : MonoBehaviour
 {
-    [SerializeField]
-    private XROrigin xrOrigin;
-
-    [SerializeField]
-    private Vector3 desiredWorldForward = Vector3.forward;
+    public Transform cubeTransform; // The transform to move to the center of the guardian
+    public TMP_Text text;
 
     void Start()
     {
-        if (xrOrigin == null)
+        CenterSceneOnGuardian();
+    }
+
+    private void CenterSceneOnGuardian()
+    {
+        // Get the active XRInputSubsystem
+        List<XRInputSubsystem> subsystems = new List<XRInputSubsystem>();
+        SubsystemManager.GetSubsystems(subsystems);
+
+        if (subsystems.Count == 0)
         {
-            Debug.LogError("XR Origin is not assigned. Please assign it in the inspector.");
+            Debug.LogWarning("No XRInputSubsystems found.");
             return;
         }
 
-        CenterPlaySpace();
-    }
+        XRInputSubsystem xrSubsystem = subsystems[0]; // Assuming the first one is valid
 
-    public void CenterPlaySpace()
-    {
-        var xrInputSubsystem = GetXRInputSubsystem();
-        if (xrInputSubsystem != null && xrInputSubsystem.TryRecenter())
+        // Retrieve the boundary points
+        List<Vector3> boundaryPoints = new List<Vector3>();
+        if (xrSubsystem.TryGetBoundaryPoints(boundaryPoints) && boundaryPoints.Count > 0)
         {
-            Debug.Log("Recentered XR Play Space.");
+            // Calculate the center of the boundary
+            Vector3 center = Vector3.zero;
+            foreach (Vector3 point in boundaryPoints)
+            {
+                center += point;
+            }
+            center /= boundaryPoints.Count;
+
+            // Log boundary points (optional)
+            Debug.Log("Boundary Points: ");
+            foreach (var point in boundaryPoints)
+            {
+                Debug.Log(point);
+            }
+
+            // Move the cube to the center of the boundary
+            if (cubeTransform != null)
+            {
+                cubeTransform.position = center;
+                text.text = cubeTransform.position.ToString();
+                Debug.Log($"Cube moved to center of play space: {center}");
+            }
         }
         else
         {
-            Debug.LogWarning("Failed to recenter XR Play Space.");
+            Debug.LogWarning("Unable to retrieve boundary points or no boundary points available.");
         }
-
-        AlignToForwardDirection();
-    }
-
-    private void AlignToForwardDirection()
-    {
-        var currentForward = xrOrigin.transform.forward;
-        var rotationToAlign = Quaternion.FromToRotation(currentForward, desiredWorldForward);
-        xrOrigin.transform.rotation = rotationToAlign * xrOrigin.transform.rotation;
-        Debug.Log("Aligned XR Origin forward direction to the desired world forward direction.");
-    }
-
-    private XRInputSubsystem GetXRInputSubsystem()
-    {
-        var subsystems = new List<XRInputSubsystem>();
-        SubsystemManager.GetInstances(subsystems);
-
-        return subsystems.Count > 0 ? subsystems[0] : null;
     }
 }

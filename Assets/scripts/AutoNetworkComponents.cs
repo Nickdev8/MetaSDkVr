@@ -40,4 +40,14 @@ public class AutoNetworkComponents : MonoBehaviour
             onClientStart.Invoke();
         }
     }
+
+    private void OnClientConnect(NetworkConnection conn)
+    {
+        Debug.Log($"Client connected: {conn.connectionId}");
+    }
+
+    private void OnServerConnect(NetworkConnection conn)
+    {
+        Debug.Log($"Server detected client connection: {conn.connectionId}");
+    }
 }

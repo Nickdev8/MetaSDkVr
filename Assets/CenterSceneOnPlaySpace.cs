@@ -7,56 +7,92 @@ public class CenterSceneOnPlaySpace : MonoBehaviour
 {
     public Transform cubeTransform; // The transform to move to the center of the guardian
     public TMP_Text text;
+    public GameObject worldContainer; // The parent object for all world objects
 
-    void Start()
+    private OVRBoundary boundary;
+
+    private void Start()
     {
-        CenterSceneOnGuardian();
-    }
-
-    private void CenterSceneOnGuardian()
-    {
-        // Get the active XRInputSubsystem
-        List<XRInputSubsystem> subsystems = new List<XRInputSubsystem>();
-        SubsystemManager.GetSubsystems(subsystems);
-
-        if (subsystems.Count == 0)
+        // Ensure boundary system is initialized
+        if (OVRManager.boundary != null)
         {
-            Debug.LogWarning("No XRInputSubsystems found.");
-            return;
+            boundary = new OVRBoundary();
         }
 
-        XRInputSubsystem xrSubsystem = subsystems[0]; // Assuming the first one is valid
+        // Add tracking change event to handle recentering
+        OVRManager.TrackingAcquired += UpdateCenter;
 
-        // Retrieve the boundary points
-        List<Vector3> boundaryPoints = new List<Vector3>();
-        if (xrSubsystem.TryGetBoundaryPoints(boundaryPoints) && boundaryPoints.Count > 0)
+        UpdateCenter();
+    }
+
+    private void OnDestroy()
+    {
+        // Clean up event subscription
+        OVRManager.TrackingAcquired -= UpdateCenter;
+    }
+
+    private void UpdateCenter()
+    {
+        if (boundary != null && OVRManager.boundary.GetConfigured())
         {
-            // Calculate the center of the boundary
-            Vector3 center = Vector3.zero;
-            foreach (Vector3 point in boundaryPoints)
-            {
-                center += point;
-            }
-            center /= boundaryPoints.Count;
+            Vector3[] points = OVRManager.boundary.GetGeometry(OVRBoundary.BoundaryType.PlayArea);
 
-            // Log boundary points (optional)
-            Debug.Log("Boundary Points: ");
-            foreach (var point in boundaryPoints)
+            if (points.Length >= 4)
             {
-                Debug.Log(point);
+                CenterWorld(points);
             }
-
-            // Move the cube to the center of the boundary
-            if (cubeTransform != null)
+            else
             {
-                cubeTransform.position = center;
-                text.text = cubeTransform.position.ToString();
-                Debug.Log($"Cube moved to center of play space: {center}");
+                Debug.LogWarning("Insufficient boundary points to calculate center.");
             }
         }
         else
         {
-            Debug.LogWarning("Unable to retrieve boundary points or no boundary points available.");
+            Debug.LogWarning("Boundary not configured or OVRManager not available.");
         }
+    }
+
+    private void CenterWorld(Vector3[] points)
+    {
+        // Convert boundary points to local space
+        Vector3 point1 = transform.InverseTransformPoint(points[0]);
+        Vector3 point2 = transform.InverseTransformPoint(points[1]);
+        Vector3 point3 = transform.InverseTransformPoint(points[2]);
+        Vector3 point4 = transform.InverseTransformPoint(points[3]);
+
+        // Calculate midpoints and orientation
+        Vector3 pointA = MidPoint(point1, point2);
+        Vector3 pointB = MidPoint(point3, point4);
+
+        Vector3 between = pointB - pointA;
+        float distance = between.magnitude;
+
+        // Calculate center and orientation
+        Vector3 centerPosition = pointA + (between / 2.0f);
+        Quaternion centerRotation = Quaternion.LookRotation(between);
+
+        // Apply position and rotation to the world container
+        if (worldContainer != null)
+        {
+            worldContainer.transform.position = centerPosition;
+            worldContainer.transform.rotation = centerRotation;
+
+            Debug.Log($"World centered at position: {centerPosition}, rotation: {centerRotation.eulerAngles}");
+        }
+
+        // Optionally move the cubeTransform to the center
+        if (cubeTransform != null)
+        {
+            cubeTransform.position = centerPosition;
+            if (text != null)
+            {
+                text.text = centerPosition.ToString();
+            }
+        }
+    }
+
+    private Vector3 MidPoint(Vector3 a, Vector3 b)
+    {
+        return (a + b) / 2.0f;
     }
 }

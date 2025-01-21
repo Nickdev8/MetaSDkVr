@@ -82,7 +82,7 @@ PlayerSettings:
   androidApplicationEntry: 2
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
-  runInBackground: 0
+  runInBackground: 1
   muteOtherAudioSources: 0
   Prepare IOS For Recording: 0
   Force IOS Speakers When Recording: 0
@@ -145,6 +145,8 @@ PlayerSettings:
   - {fileID: 11400000, guid: 68c2263114fb25c4c8dc7c801f70279a, type: 2}
   - {fileID: 11400000, guid: a63bfca9c78014b41b9cc11e9d03584f, type: 2}
   - {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  - {fileID: 11400000, guid: 247e995c704bf094aa428235badfa0fd, type: 2}
+  - {fileID: 11400000, guid: be2c8228723af324e931fafaceb5c5ae, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1

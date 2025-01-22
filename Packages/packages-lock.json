@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.leloctai.piss-stream": {
+      "version": "https://github.com/LeLocTai/pISSStreamUnity.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.editorcoroutines": "1.0.0"
+      },
+      "hash": "b75deaf9ce7e9a0e6495188c3add7098778828a8"
+    },
     "com.meta.xr.mrutilitykit": {
       "version": "71.0.0",
       "depth": 1,
@@ -146,7 +155,7 @@
     },
     "com.unity.editorcoroutines": {
       "version": "1.0.0",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"

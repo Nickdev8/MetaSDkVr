@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.leloctai.piss-stream": "https://github.com/LeLocTai/pISSStreamUnity.git",
     "com.meta.xr.sdk.all": "71.0.0",
     "com.unity.ai.navigation": "2.0.5",
     "com.unity.cinemachine": "3.1.2",

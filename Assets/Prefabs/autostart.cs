@@ -74,16 +74,19 @@ public class autostart : MonoBehaviour
     private void OnServerConnected(NetworkConnectionToClient conn)
     {
         Debug.Log($"[Server] Client connected: {conn.address}");
+        text.text = text.text + "@\n" + $"[Server] Client connected: {conn.address}";
     }
 
     private void OnServerDisconnected(NetworkConnectionToClient conn)
     {
         Debug.Log($"[Server] Client disconnected: {conn.address}");
+        text.text = text.text + "@\n" + $"[Server] Client disconnected: {conn.address}";
     }
 
     private void OnServerError(NetworkConnectionToClient conn, TransportError error, string message)
     {
         Debug.LogError($"[Server] Error occurred with client {conn.address}: {error} - {message}");
+        text.text = text.text + "@\n" + $"[Server] Error occurred with client {conn.address}: {error} - {message}";
     }
     
     //
@@ -92,16 +95,19 @@ public class autostart : MonoBehaviour
     private void OnClientConnected()
     {
         Debug.Log("[Client] Successfully connected to the server.");
+        text.text = text.text + "@\n" + "[Client] Successfully connected to the server.";
     }
 
     private void OnClientDisconnected()
     {
         Debug.Log("[Client] Disconnected from the server.");
+        text.text = text.text + "@\n" + "[Client] Disconnected from the server.";
     }
 
     private void OnClientError(TransportError error, string message)
     {
         Debug.LogError($"[Client] Network error occurred: {error} - {message}");
+        text.text = text.text + "@\n" + $"[Client] Network error occurred: {error} - {message}";
     }
 }
 

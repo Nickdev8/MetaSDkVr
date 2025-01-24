@@ -678,7 +678,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: V0.994
+  m_text: V0.995
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -16430,6 +16430,7 @@ GameObject:
   - component: {fileID: 1941252335}
   - component: {fileID: 1941252337}
   - component: {fileID: 1941252336}
+  - component: {fileID: 1941252339}
   - component: {fileID: 1941252338}
   m_Layer: 0
   m_Name: NetworkManager
@@ -16539,7 +16540,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58c99b15a058d504d948afc131942652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  networkDiscovery: {fileID: 0}
   text: {fileID: 1506753941}
+--- !u!114 &1941252339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941252334}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c761308e733c51245b2e8bb4201f46dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enableActiveDiscovery: 1
+  BroadcastAddress: 
+  serverBroadcastListenPort: 47777
+  ActiveDiscoveryInterval: 3
+  transport: {fileID: 1941252336}
+  OnServerFound:
+    m_PersistentCalls:
+      m_Calls: []
+  secretHandshake: -810349783361882153
 --- !u!114 &1956192479 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4779881054689550583, guid: b2151d111ebb7114294d9b82456e8358, type: 3}

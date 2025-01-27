@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class VRPlayerRig : MonoBehaviour
 {
@@ -7,7 +8,23 @@ public class VRPlayerRig : MonoBehaviour
     public Transform headTransform;
     
     public VRNetworkPlayerScript localVRNetworkPlayerScript;
+    
+    // [Header("VR Player")]
+    // [SerializeField] private int PlayerId;
+    // HashSet is an unsorted list/array
+    
+    public static List<GameObject> ActivePlayers = new List<GameObject>();
+    
+    protected virtual void Awake()
+    {
+        ActivePlayers.Add(this.gameObject);
+    }
 
+    protected virtual void OnDestroy()
+    {
+        ActivePlayers.Remove(this.gameObject);
+    }
+    
     private void Update()
     {
         if (!localVRNetworkPlayerScript)

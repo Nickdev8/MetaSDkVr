@@ -4,6 +4,7 @@ using UnityEngine;
 using Mirror;
 using Mirror.Discovery;
 using TMPro;
+using UnityEngine.Events;
 
 public class AutoStart : MonoBehaviour
 {
@@ -13,17 +14,23 @@ public class AutoStart : MonoBehaviour
     public TMP_Text text;
     private bool isConnected = false;
 
+    public UnityEvent startedHost;
+    public UnityEvent startedClient;
+    
+
     private void Start()
     {
         if (Application.platform == RuntimePlatform.Android)
         {
             Log("Running on Android");
             StartClient();
+            startedClient.Invoke();
         }
         else if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
         {
             Log("Running on Windows");
             StartHost();
+            startedHost.Invoke();
         }
         else
         {

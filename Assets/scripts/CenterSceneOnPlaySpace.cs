@@ -7,7 +7,7 @@ public class CenterSceneOnPlaySpace : MonoBehaviour
 {
     public Transform cubeTransform; // The transform to move to the center of the guardian
     public TMP_Text text;
-    public GameObject worldContainer; // The parent object for all world objects
+    public GameObject worldContainer; // The parent object for all world objects (e.g., OVRCameraRig)
 
     private OVRBoundary boundary;
 
@@ -37,7 +37,7 @@ public class CenterSceneOnPlaySpace : MonoBehaviour
         {
             Vector3[] points = OVRManager.boundary.GetGeometry(OVRBoundary.BoundaryType.PlayArea);
 
-            if (points.Length >= 4)
+            if (points != null && points.Length > 0)
             {
                 CenterWorld(points);
             }
@@ -54,30 +54,25 @@ public class CenterSceneOnPlaySpace : MonoBehaviour
 
     private void CenterWorld(Vector3[] points)
     {
-        // Convert boundary points to local space
-        Vector3 point1 = transform.InverseTransformPoint(points[0]);
-        Vector3 point2 = transform.InverseTransformPoint(points[1]);
-        Vector3 point3 = transform.InverseTransformPoint(points[2]);
-        Vector3 point4 = transform.InverseTransformPoint(points[3]);
+        // Calculate the average position of all boundary points to find the center
+        Vector3 centerPosition = Vector3.zero;
+        foreach (Vector3 point in points)
+        {
+            centerPosition += point;
+        }
+        centerPosition /= points.Length;
 
-        // Calculate midpoints and orientation
-        Vector3 pointA = MidPoint(point1, point2);
-        Vector3 pointB = MidPoint(point3, point4);
+        // Convert the center position to world space
+        centerPosition = transform.TransformPoint(centerPosition);
 
-        Vector3 between = pointB - pointA;
-        float distance = between.magnitude;
-
-        // Calculate center and orientation
-        Vector3 centerPosition = pointA + (between / 2.0f);
-        Quaternion centerRotation = Quaternion.LookRotation(between);
-
-        // Apply position and rotation to the world container
+        // Apply the calculated center position to the world container
         if (worldContainer != null)
         {
-            worldContainer.transform.position = centerPosition;
-            worldContainer.transform.rotation = centerRotation;
+            Vector3 offset = worldContainer.transform.position - centerPosition;
 
-            Debug.Log($"World centered at position: {centerPosition}, rotation: {centerRotation.eulerAngles}");
+            worldContainer.transform.position -= offset;
+
+            Debug.Log($"World centered at position: {centerPosition}");
         }
 
         // Optionally move the cubeTransform to the center
@@ -89,10 +84,5 @@ public class CenterSceneOnPlaySpace : MonoBehaviour
                 text.text = centerPosition.ToString();
             }
         }
-    }
-
-    private Vector3 MidPoint(Vector3 a, Vector3 b)
-    {
-        return (a + b) / 2.0f;
     }
 }

@@ -1,106 +1,169 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using Mirror.Discovery;
 using TMPro;
 
-public class autostart : MonoBehaviour
+public class AutoStart : MonoBehaviour
 {
     public NetworkDiscovery networkDiscovery;
-    readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
-    
+    private readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
+
     public TMP_Text text;
+    private bool isConnected = false;
 
     private void Start()
     {
         if (Application.platform == RuntimePlatform.Android)
         {
-            text.text = text.text + "@\n" + "Running on Android";
+            Log("Running on Android");
             StartClient();
         }
         else if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
         {
-            text.text = text.text + "@\n" + "Running on Windows";
+            Log("Running on Windows");
             StartHost();
         }
         else
         {
-            Debug.Log("Running on an unsupported platform");
+            Log("Running on an unsupported platform");
         }
     }
 
-
+    public void ServerFound(ServerResponse serverResponse)
+    {
+        discoveredServers.Add(serverResponse.serverId, serverResponse);
+    }
+    
     private void StartHost()
     {
-        Debug.Log("Starting as host");
-        text.text += "@\nStarting as host";
+        Log("Starting as host");
         discoveredServers.Clear();
         NetworkManager.singleton.StartHost();
-    }
-    
-    private void StartClient()
-    {
-        Debug.Log("Starting as client.");
-        text.text += "@\nStarting as client";
-        discoveredServers.Clear();
-        networkDiscovery.StartDiscovery();
+        networkDiscovery.AdvertiseServer();
+        Log("Server is now advertising on the network.");
     }
 
-    
-    
-    //
-    // logging
-    //
+    private void StartClient()
+    {
+        Log("Starting as client");
+        discoveredServers.Clear();
+        networkDiscovery.StartDiscovery();
+        Log("Client started discovery. Searching for servers...");
+
+        // Start a coroutine to check for discovered servers
+        StartCoroutine(WaitForServers(5f)); // Wait for 5 seconds
+    }
+
+    private IEnumerator WaitForServers(float timeout)
+    {
+        float startTime = Time.time;
+        while (Time.time - startTime < timeout)
+        {
+            if (discoveredServers.Count > 0)
+            {
+                Log($"Found {discoveredServers.Count} server(s). Attempting to connect...");
+                ConnectToFirstDiscoveredServer();
+                yield break;
+            }
+            yield return null; // Wait for the next frame
+        }
+        Log("No servers found after timeout. Is the host running?");
+    }
+
+    private void ConnectToFirstDiscoveredServer()
+    {
+        foreach (var server in discoveredServers.Values)
+        {
+            Log($"Attempting to connect to server: {server.EndPoint.Address}");
+            NetworkManager.singleton.networkAddress = server.EndPoint.Address.ToString();
+            NetworkManager.singleton.StartClient();
+            return;
+        }
+    }
+
     private void Awake()
     {
-        // Register event handlers for server-side events
+        Log("Awake");
+
+
+        // Server-side events
         NetworkServer.OnConnectedEvent += OnServerConnected;
         NetworkServer.OnDisconnectedEvent += OnServerDisconnected;
         NetworkServer.OnErrorEvent += OnServerError;
 
-        // Register event handlers for client-side events
+        // Client-side events
         NetworkClient.OnConnectedEvent += OnClientConnected;
         NetworkClient.OnDisconnectedEvent += OnClientDisconnected;
         NetworkClient.OnErrorEvent += OnClientError;
     }
-    
+
+    private void OnServerFound(ServerResponse info)
+    {
+        Log($"Discovered server at {info.EndPoint.Address}:{info.EndPoint.Port}");
+        if (!discoveredServers.ContainsKey(info.serverId))
+        {
+            discoveredServers[info.serverId] = info;
+        }
+    }
+
+    //
+    // Server-side logging
+    //
     private void OnServerConnected(NetworkConnectionToClient conn)
     {
-        Debug.Log($"[Server] Client connected: {conn.address}");
-        text.text = text.text + "@\n" + $"[Server] Client connected: {conn.address}";
+        Log($"[Server] Client connected: {conn.address}");
     }
 
     private void OnServerDisconnected(NetworkConnectionToClient conn)
     {
-        Debug.Log($"[Server] Client disconnected: {conn.address}");
-        text.text = text.text + "@\n" + $"[Server] Client disconnected: {conn.address}";
+        Log($"[Server] Client disconnected: {conn.address}");
     }
 
     private void OnServerError(NetworkConnectionToClient conn, TransportError error, string message)
     {
-        Debug.LogError($"[Server] Error occurred with client {conn.address}: {error} - {message}");
-        text.text = text.text + "@\n" + $"[Server] Error occurred with client {conn.address}: {error} - {message}";
+        LogError($"[Server] Error with client {conn.address}: {error} - {message}");
     }
-    
+
     //
     // Client-side logging
     //
     private void OnClientConnected()
     {
-        Debug.Log("[Client] Successfully connected to the server.");
-        text.text = text.text + "@\n" + "[Client] Successfully connected to the server.";
+        isConnected = true;
+        Log("[Client] Successfully connected to the server.");
     }
 
     private void OnClientDisconnected()
     {
-        Debug.Log("[Client] Disconnected from the server.");
-        text.text = text.text + "@\n" + "[Client] Disconnected from the server.";
+        isConnected = false;
+        Log("[Client] Disconnected from the server.");
     }
 
     private void OnClientError(TransportError error, string message)
     {
-        Debug.LogError($"[Client] Network error occurred: {error} - {message}");
-        text.text = text.text + "@\n" + $"[Client] Network error occurred: {error} - {message}";
+        LogError($"[Client] Network error occurred: {error} - {message}");
+    }
+
+    //
+    // Helper Methods
+    //
+    private void Log(string message)
+    {
+        Debug.Log(message);
+        if (text != null)
+        {
+            text.text += "\n" + message;
+        }
+    }
+
+    private void LogError(string message)
+    {
+        Debug.LogError(message);
+        if (text != null)
+        {
+            text.text += "\n" + message;
+        }
     }
 }
-

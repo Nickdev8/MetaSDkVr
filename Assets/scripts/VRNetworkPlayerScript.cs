@@ -22,7 +22,7 @@ public class VRNetworkPlayerScript : NetworkBehaviour
         vrPlayerRig.localVRNetworkPlayerScript = this;
 
         // we dont need to see our network representation of hands, or our own headset, it also covers camera without using layers or some repositioning
-        headModel.SetActive(false);
+        //headModel.SetActive(false);
         rHandModel.SetActive(false);
         lHandModel.SetActive(false);
         

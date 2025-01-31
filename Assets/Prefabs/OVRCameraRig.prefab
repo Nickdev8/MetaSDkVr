@@ -11766,10 +11766,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 52024380389728838}
-  - component: {fileID: 909979032259541490}
   - component: {fileID: 865813389005436772}
   - component: {fileID: 3346621942588708729}
   - component: {fileID: 7382124392430391736}
+  - component: {fileID: 5469956682376462550}
   m_Layer: 0
   m_Name: OVRCameraRig
   m_TagString: Untagged
@@ -11794,21 +11794,6 @@ Transform:
   - {fileID: 307158071664868989}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &909979032259541490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2498044797387368884}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da6a8685860efb84497c0856a49a64f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cubeTransform: {fileID: 0}
-  text: {fileID: 0}
-  worldContainer: {fileID: 0}
 --- !u!114 &865813389005436772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11922,6 +11907,24 @@ MonoBehaviour:
   resetHmdPoseByMiddleMouseButton: 1
   activateKeys: 3201000031010000
   pitchKeys: 3401000033010000
+--- !u!114 &5469956682376462550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2498044797387368884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f2ce50a8a847f4db22d8993eab05df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rHandTransform: {fileID: 2260478173745596526}
+  lHandTransform: {fileID: 1062269973762590784}
+  headTransform: {fileID: 7723051303878640467}
+  localVRNetworkPlayerScript: {fileID: 0}
+  currentPlayerId: 0
+  gameManager: {fileID: 0}
 --- !u!1 &2502934296946777424
 GameObject:
   m_ObjectHideFlags: 0
@@ -30213,36 +30216,36 @@ MonoBehaviour:
   - {fileID: 2295426720629012710}
   - {fileID: 8340063073998249222}
   - {fileID: 7630371663045335744}
-  _openXRSkinnedMeshRenderer: {fileID: 9010166003917599542}
-  _openXRRoot: {fileID: 9143137738735450020}
-  _openXRHandMaterialPropertyBlockEditor: {fileID: 1951515931940095744}
+  _openXRSkinnedMeshRenderer: {fileID: 4498990797568137059}
+  _openXRRoot: {fileID: 8051624405692753012}
+  _openXRHandMaterialPropertyBlockEditor: {fileID: 8684136492958051341}
   _openXRJointTransforms:
-  - {fileID: 3758262148647629081}
-  - {fileID: 8818656476550006760}
-  - {fileID: 8282704514937610292}
-  - {fileID: 8754008396908184474}
-  - {fileID: 6751262647636076196}
-  - {fileID: 1595505006515046463}
+  - {fileID: 6328952837028288690}
+  - {fileID: 8051624405692753012}
+  - {fileID: 4918304318764801658}
+  - {fileID: 8793667174029573505}
+  - {fileID: 5268847179561299855}
+  - {fileID: 6101093478946134346}
   - {fileID: 9206854425172557830}
-  - {fileID: 4686458496472607227}
-  - {fileID: 3718765308511224161}
-  - {fileID: 4561500461645032065}
-  - {fileID: 1699500325203624731}
+  - {fileID: 2447728151537452856}
+  - {fileID: 3755766509730843841}
+  - {fileID: 2225731875946369664}
+  - {fileID: 7405189651606160610}
   - {fileID: 8088783486043407043}
-  - {fileID: 4577234729058367573}
-  - {fileID: 1338619708567658975}
-  - {fileID: 7029541633561701096}
-  - {fileID: 6828468172969505349}
+  - {fileID: 7527980880375901810}
+  - {fileID: 2985453536567677453}
+  - {fileID: 4022251099064850525}
+  - {fileID: 2295426720629012710}
   - {fileID: 573550437636646923}
-  - {fileID: 6198984536313562924}
-  - {fileID: 5064528971301558470}
-  - {fileID: 864915649635920349}
-  - {fileID: 7041614319069166657}
-  - {fileID: 7391328542989923700}
-  - {fileID: 7622633901027402877}
-  - {fileID: 5614685670093663826}
-  - {fileID: 5993723193071355253}
-  - {fileID: 8640158207956304889}
+  - {fileID: 6473467524354300274}
+  - {fileID: 8581282528491204775}
+  - {fileID: 4786357894787768583}
+  - {fileID: 8340063073998249222}
+  - {fileID: 6141094826319257697}
+  - {fileID: 9004795059414003250}
+  - {fileID: 2888771409101975684}
+  - {fileID: 7521844345732235212}
+  - {fileID: 7630371663045335744}
 --- !u!1 &6786649410551274221
 GameObject:
   m_ObjectHideFlags: 0
@@ -33122,36 +33125,36 @@ MonoBehaviour:
   - {fileID: 4908108894400010222}
   - {fileID: 7927920170109773440}
   - {fileID: 3157454418672681909}
-  _openXRSkinnedMeshRenderer: {fileID: 6793871891324754248}
-  _openXRRoot: {fileID: 1749145494934052265}
-  _openXRHandMaterialPropertyBlockEditor: {fileID: 975804481971629948}
+  _openXRSkinnedMeshRenderer: {fileID: 396064735954869734}
+  _openXRRoot: {fileID: 8601617200018364033}
+  _openXRHandMaterialPropertyBlockEditor: {fileID: 1766464474986911711}
   _openXRJointTransforms:
-  - {fileID: 8730097293417064275}
-  - {fileID: 8257442390553998965}
-  - {fileID: 7441247416859170467}
-  - {fileID: 2202559071294589105}
-  - {fileID: 4050741957973485166}
-  - {fileID: 2201683064275190397}
+  - {fileID: 9021240236906509874}
+  - {fileID: 8601617200018364033}
+  - {fileID: 1952850560227940096}
+  - {fileID: 992012328955159642}
+  - {fileID: 6456434948301930237}
+  - {fileID: 3404034661760562843}
   - {fileID: 1725034136777366397}
-  - {fileID: 7081777589135420020}
-  - {fileID: 4828111747813313171}
-  - {fileID: 4836276040127542413}
-  - {fileID: 1726662188083639539}
+  - {fileID: 3056286965879618012}
+  - {fileID: 4080535747411185845}
+  - {fileID: 4901837984714480672}
+  - {fileID: 5501476835846074203}
   - {fileID: 4435448644123550033}
-  - {fileID: 5206087610329378598}
-  - {fileID: 4194036367514004005}
-  - {fileID: 4589413564179543619}
-  - {fileID: 6820149815121812070}
+  - {fileID: 7099235241963807187}
+  - {fileID: 1316250951439092134}
+  - {fileID: 4862421996218121211}
+  - {fileID: 4908108894400010222}
   - {fileID: 6548788104119439269}
-  - {fileID: 4571964013097331623}
-  - {fileID: 3710125697038996081}
-  - {fileID: 1225277036029729779}
-  - {fileID: 539354655119400556}
-  - {fileID: 1479426787245744604}
-  - {fileID: 5273804011526401077}
-  - {fileID: 7289542035658821960}
-  - {fileID: 1466799773107728333}
-  - {fileID: 7768413462134322065}
+  - {fileID: 7990856935299453547}
+  - {fileID: 6927560845496326983}
+  - {fileID: 4837590592661836931}
+  - {fileID: 7927920170109773440}
+  - {fileID: 8780902480050251140}
+  - {fileID: 3130238939420726932}
+  - {fileID: 5785650150421565059}
+  - {fileID: 7016488587881446796}
+  - {fileID: 3157454418672681909}
 --- !u!1 &7469510477010259775
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Mirror;
 
 public class VRPlayerRig : MonoBehaviour
 {
@@ -9,20 +10,22 @@ public class VRPlayerRig : MonoBehaviour
     
     public VRNetworkPlayerScript localVRNetworkPlayerScript;
     
-    // [Header("VR Player")]
-    // [SerializeField] private int PlayerId;
-    // HashSet is an unsorted list/array
-    
-    public static List<GameObject> ActivePlayers = new List<GameObject>();
+    public int currentPlayerId;
+    public GameManager gameManager;
     
     protected virtual void Awake()
     {
-        ActivePlayers.Add(this.gameObject);
+        gameManager = FindFirstObjectByType<GameManager>();
+        gameManager.AddPlayer(this);
+        currentPlayerId = gameManager.PlayerList.IndexOf(this.gameObject);
+        gameManager.Log($"added {this.gameObject.name} to PlayerList with ID {currentPlayerId}");
     }
 
     protected virtual void OnDestroy()
     {
-        ActivePlayers.Remove(this.gameObject);
+        gameManager.RemovePlayer(this);
+        gameManager.Log($"removed {this.gameObject.name} to PlayerList with ID {currentPlayerId}");
+        currentPlayerId = -1;
     }
     
     private void Update()

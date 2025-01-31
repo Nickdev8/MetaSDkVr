@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using Mirror.Discovery;
-using TMPro;
 using UnityEngine.Events;
 
 public class AutoStart : MonoBehaviour
@@ -11,12 +10,10 @@ public class AutoStart : MonoBehaviour
     public NetworkDiscovery networkDiscovery;
     private readonly Dictionary<long, ServerResponse> discoveredServers = new Dictionary<long, ServerResponse>();
 
-    public TMP_Text text;
-    private bool isConnected = false;
+    [HideInInspector] public bool isConnected = false;
 
     public UnityEvent startedHost;
     public UnityEvent startedClient;
-    
 
     private void Start()
     {
@@ -26,7 +23,8 @@ public class AutoStart : MonoBehaviour
             StartClient();
             startedClient.Invoke();
         }
-        else if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
+        else if (Application.platform == RuntimePlatform.WindowsPlayer ||
+                 Application.platform == RuntimePlatform.WindowsEditor)
         {
             Log("Running on Windows");
             StartHost();
@@ -41,6 +39,11 @@ public class AutoStart : MonoBehaviour
     public void ServerFound(ServerResponse serverResponse)
     {
         discoveredServers.Add(serverResponse.serverId, serverResponse);
+    }
+
+    private void Update()
+    {
+        // ...
     }
     
     private void StartHost()
@@ -86,14 +89,13 @@ public class AutoStart : MonoBehaviour
             Log($"Attempting to connect to server: {server.EndPoint.Address}");
             NetworkManager.singleton.networkAddress = server.EndPoint.Address.ToString();
             NetworkManager.singleton.StartClient();
-            return;
+            return; // only connect to the first discovered server in this example
         }
     }
 
     private void Awake()
     {
         Log("Awake");
-
 
         // Server-side events
         NetworkServer.OnConnectedEvent += OnServerConnected;
@@ -109,6 +111,7 @@ public class AutoStart : MonoBehaviour
     private void OnServerFound(ServerResponse info)
     {
         Log($"Discovered server at {info.EndPoint.Address}:{info.EndPoint.Port}");
+        
         if (!discoveredServers.ContainsKey(info.serverId))
         {
             discoveredServers[info.serverId] = info;
@@ -153,24 +156,53 @@ public class AutoStart : MonoBehaviour
         LogError($"[Client] Network error occurred: {error} - {message}");
     }
 
-    //
-    // Helper Methods
-    //
-    private void Log(string message)
+    /// <summary>
+    /// Use GameObject.FindWithTag to find the GameManager by tag each time we log.
+    /// Make sure the GameManager in the scene has the tag "GameManager".
+    /// </summary>
+    private void Log(string logMessage)
     {
-        Debug.Log(message);
-        if (text != null)
+        var gmObject = GameObject.FindWithTag("GameManager");
+        if (gmObject != null)
         {
-            text.text += "\n" + message;
+            var gm = gmObject.GetComponent<GameManager>();
+            if (gm != null)
+            {
+                gm.Log(logMessage);
+            }
+            else
+            {
+                // Fallback if no GameManager script is found
+                Debug.Log(logMessage);
+            }
+        }
+        else
+        {
+            // Fallback if no GameObject with tag "GameManager" is found
+            Debug.Log(logMessage);
         }
     }
 
-    private void LogError(string message)
+    private void LogError(string errorMessage)
     {
-        Debug.LogError(message);
-        if (text != null)
+        var gmObject = GameObject.FindWithTag("GameManager");
+        if (gmObject != null)
         {
-            text.text += "\n" + message;
+            var gm = gmObject.GetComponent<GameManager>();
+            if (gm != null)
+            {
+                gm.LogError(errorMessage);
+            }
+            else
+            {
+                // Fallback if no GameManager script is found
+                Debug.LogError(errorMessage);
+            }
+        }
+        else
+        {
+            // Fallback if no GameObject with tag "GameManager" is found
+            Debug.LogError(errorMessage);
         }
     }
 }

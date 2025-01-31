@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
@@ -13,10 +14,18 @@ public class VRNetworkPlayerScript : NetworkBehaviour
     public GameObject lHandModel;
 
     public VRPlayerRig vrPlayerRig;
-
-
+    
     public override void OnStartLocalPlayer()
     {
+        if (NetworkServer.connections.Count > 0)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        else
+        {
+            Debug.Log(NetworkServer.connections.Count);
+        }
         // create a link to local vr rig, so that rig can sync to our local network players transforms
         vrPlayerRig = GameObject.FindFirstObjectByType<VRPlayerRig>();
         vrPlayerRig.localVRNetworkPlayerScript = this;

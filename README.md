@@ -1,3 +1,5 @@
+# this project is a very pre alpha demo with what i have been working on
+
 # VR Multiplayer Project
 
 This project is a prototype for a **local co-op VR multiplayer experience** for the Oculus Quest 2. It enables multiple users to interact in the same virtual space with synchronized positions and movements. The prototype includes a networking and the Meta XR Sdk.

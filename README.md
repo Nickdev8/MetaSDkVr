@@ -1,23 +1,32 @@
 # VR Multiplayer Project
 
-This project is a prototype for a **local co-op VR multiplayer experience** for the Oculus Quest 2. It enables multiple users to interact in the same virtual space with synchronized positions and movements. The prototype includes a debugging tool to visualize Guardian boundaries and calculate shared origins for alignment between players.
+## this project is a very pre alpha demo with what i have been working on
+and i have been very buzy with this but becouse its the end of high seas i wanted to upload what i had for now
+
+---
+
+This project is a prototype for a **local co-op VR multiplayer experience** for the Oculus Quest 2. It enables multiple users to interact in the same virtual space with synchronized positions and movements. The prototype includes a networking and the Meta XR Sdk.
 
 ---
 
 ## Features
 
+
+2. **XR Sdk and Instactions**
+   - phisicla buttons to interact with
+   - Able to reposision the player to center the scene to the border later
+
+3. **Real-Time Mirror Networking**
+   - Host for hosting it all
+   - clients to run on the quests to play
+
+
+## ToDo
+
 1. **Local Multiplayer with Shared Space**
    - Multiple players can join the same virtual room and see each other's positions.
    - Player positions are synchronized relative to a shared origin point.
-
-2. **Oculus Guardian Boundary Visualization**
-   - Retrieves and displays the Guardian boundary points.
-   - Calculates the center of the play area for alignment.
-
-3. **Real-Time Position Synchronization**
-   - Synchronizes head and hand positions using a networking framework (e.g., Mirror Networking).
-   - Automatic alignment ensures seamless setup.
-
+   - 
 4. **Debugging Tools**
    - Visualize boundary points and center in the Unity Scene View.
    - Draws boundary lines and marks the center for debugging purposes.
@@ -26,8 +35,8 @@ This project is a prototype for a **local co-op VR multiplayer experience** for 
 
 ## Requirements
 
-- **Hardware**: Oculus Quest 2
-- **Software**: Unity 2022.3 or newer
+- **Hardware**: Oculus Quest 2 and Windows pc
+- **Software**: Unity 6.000.34f1 or newer
 - **Networking Framework**: Mirror Networking
 - **SDK**: Meta XR SDK (for Oculus Quest 2 integration)
 
@@ -47,15 +56,13 @@ $ cd vr-multiplayer-prototype
   - **Mirror Networking**
   - **Meta XR SDK**
 
-### 3. Configure VR Settings
-- Go to `Project Settings > XR Plug-in Management`.
-- Enable **Oculus** under Android build settings.
-- Set **Minimum API Level** to 23.
 
-### 4. Set Up Multiplayer Scene
-- Add the `NetworkManager` prefab from Mirror Networking.
-- Assign the player prefab to the `NetworkManager` component.
-- Ensure the `PlayerAlignment` script is attached to the player prefab.
+### 4. Make a andriod build for the quest
+- upload the build to the quest
+- and run the unity editor.
+
+### 5. Make a andriod build for the quest
+-- connections should be outomatic
 
 ---
 
@@ -79,40 +86,9 @@ $ cd vr-multiplayer-prototype
 
 ## Key Scripts
 
-### 1. **PlayerAlignment.cs**
-- Synchronizes player positions with the shared world space.
-- Calculates offsets to align local spaces with the host’s world space.
-- Sends and receives positional data using Mirror Networking.
-
-### 2. **OculusBoundaryDebugger.cs**
-- Retrieves Guardian boundary points and calculates the center of the boundary.
-- Visualizes the boundary and center point in the Unity Scene View for debugging.
-
----
-
-## Debugging Tools
-
-- **Boundary Visualization**:
-  - View the Guardian boundary and center in the Unity Scene View.
-  - Use this for aligning players in co-located multiplayer environments.
-
-- **Logs**:
-  - Debug logs output player connections, offsets, and boundary data.
-
----
-
-## Roadmap
-
-1. Add basic interaction (e.g., object manipulation and shared actions).
-2. Implement voice chat or text communication between players.
-3. Optimize for performance on Oculus Quest 2.
-
----
-
-## Contributing
-- Fork the repository.
-- Create a feature branch (`git checkout -b feature-name`).
-- Commit changes and open a pull request.
+### 1. **Autostart.cs**pace.
+### 2. **VRNetworkPlayerScript.cs**
+### 3. **GameManager.cs**
 
 ---
 

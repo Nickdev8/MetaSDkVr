@@ -684,7 +684,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1.004-alpha.apk
+  m_text: 1.006-alpha.apk
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3654,14 +3654,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 596890179}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.214, y: 0.496, z: 0.616}
+  m_LocalRotation: {x: -0, y: -0.1563538, z: -0, w: 0.9877012}
+  m_LocalPosition: {x: 1.377, y: 0.345, z: 0.666}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1684477275}
   m_Father: {fileID: 938043208}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -17.991, z: 0}
 --- !u!54 &596890181
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14338,7 +14338,7 @@ Transform:
   m_GameObject: {fileID: 2061573674}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.992, y: 0.489, z: 0.276}
+  m_LocalPosition: {x: -1.088, y: 0.251, z: 0.949}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
